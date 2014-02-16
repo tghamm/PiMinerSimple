@@ -44,7 +44,7 @@ def hashrate(h):
 	  elif h >= 1000000.0:
 	      u = 'Th/s'
 	      h = h / 1000000.0
-	      s = '%s %s' % (h, u)
+	  s = '%s %s' % (h, u)
 	  return s
 
 def displaysimplesummary():
@@ -62,6 +62,7 @@ def displaysimplesummary():
 			lcd.message(s1  + '\n' + s2)
 		except Exception as e:
 			lcd.clear()
+			print e
 			lcd.message("Waiting for"  + '\n' + "cgminer ")
 
 
