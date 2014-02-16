@@ -3,6 +3,7 @@ import json
 
 import sys, subprocess, time, urllib2, socket
 from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
+from CgminerAPI import CgminerAPI
 
 HOLD_TIME	= 3.0 #Time (seconds) to hold select button for shut down
 REFRESH_TIME= 3.0 #Time (seconds) between data updates
@@ -12,49 +13,7 @@ prevCol		= -1
 prev		= -1
 lastTime	= time.time()
 
-class CgminerAPI(object):
-	""" Cgminer RPC API wrapper. """
-	def __init__(self, host='localhost', port=4028):
-		self.data = {}
-		self.host = host
-		self.port = port
 
-	def command(self, command, arg=None):
-		""" Initialize a socket connection,
-		send a command (a json encoded dict) and
-		receive the response (and decode it).
-		"""
-		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-		try:
-			sock.connect((self.host, self.port))
-			payload = {"command": command}
-			if arg is not None:
-				# Parameter must be converted to basestring (no int)
-				payload.update({'parameter': unicode(arg)})
-
-			sock.send(json.dumps(payload))
-			received = self._receive(sock)
-		finally:
-			sock.shutdown(socket.SHUT_RDWR)
-			sock.close()
-		
-		return json.loads(received[:-1])
-
-	def _receive(self, sock, size=4096):
-		msg = ''
-		while 1:
-			chunk = sock.recv(size)
-			if chunk:
-				msg += chunk
-			else:
-				break
-		return msg
-
-	def __getattr__(self, attr):
-		def out(arg=None):
-			return self.command(attr, arg)
-		return out
 
 def shutdown():
 	lcd.clear()
