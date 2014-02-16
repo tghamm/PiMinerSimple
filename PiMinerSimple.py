@@ -80,12 +80,12 @@ def abbrev(v):
 def hashrate(h):
 	  u = 'Gh/s'
 	  if h >= 1000.0:
-		u = 'Th/s'
-		h = h / 1000.0
+	      u = 'Th/s'
+	      h = h / 1000.0
 	  elif h >= 1000000.0:
-		u = 'Th/s'
-		h = h / 1000000.0
-	  s = '%s %s' % (h, u)
+	      u = 'Th/s'
+	      h = h / 1000000.0
+	      s = '%s %s' % (h, u)
 	  return s
 
 def displaysimplesummary():
